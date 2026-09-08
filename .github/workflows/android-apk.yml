@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -23,18 +23,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version: '22'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Install Android SDK
         run: |
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-37"
-          sdkmanager "build-tools;37.0.0"
+          sdkmanager --install "platform-tools"
+          sdkmanager --install "platforms;android-36"
+          sdkmanager --install "build-tools;36.0.0"
           yes | sdkmanager --licenses || true
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Fix Android Gradle Plugin
         shell: bash
@@ -57,9 +59,6 @@ jobs:
 
           p.write_text(s)
           PY
-
-      - name: Install npm dependencies
-        run: npm ci
 
       - name: Build APK
         working-directory: android
