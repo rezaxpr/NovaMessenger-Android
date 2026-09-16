@@ -30,15 +30,6 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android 36
-        run: |
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-36"
-          sdkmanager "build-tools;36.0.0"
-
       - name: Create Android bundle directory
         run: mkdir -p android/app/src/main/assets
 
@@ -55,7 +46,7 @@ jobs:
         working-directory: android
         run: chmod +x gradlew
 
-      - name: Build Release APK
+      - name: Build Nova Messenger Release
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon
 
