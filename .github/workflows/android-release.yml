@@ -30,11 +30,10 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Check Android SDK
+      - name: Install Android SDK packages
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          sdkmanager --version
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-37" "build-tools;37.0.0"
 
       - name: Create Android bundle directory
         run: mkdir -p android/app/src/main/assets
@@ -54,7 +53,7 @@ jobs:
 
       - name: Build Release APK
         working-directory: android
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Prepare Nova Messenger APK
         run: |
